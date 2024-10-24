@@ -38,15 +38,12 @@ class CSV:
         try:
             df = pd.read_csv(cls.CSV_FILE)
 
-            # Strip whitespaces in columns and check if 'date' column exists
             df.columns = df.columns.str.strip()
             if 'date' not in df.columns:
                 raise KeyError("The 'date' column is missing in the CSV file.")
 
-            # Ensure date parsing with error handling for invalid dates
             df['date'] = pd.to_datetime(df['date'], format=cls.FORMAT, errors='coerce')
             
-            # Drop rows where 'date' couldn't be parsed
             df = df.dropna(subset=['date'])
 
         except KeyError as e:
